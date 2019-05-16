@@ -18,7 +18,7 @@ public class SyncProducer {
 
         String nameServer = "localhost:9876";
         String producerGroup = "SyncProducer";
-        String topic = "TopicTest";
+        String topic = "SyncProducerTopic";
         String tags = "TagA";
         DefaultMQProducer producer = ProducerBuilders.buildDefaultMQProducer(nameServer, producerGroup);
 

@@ -20,7 +20,7 @@ public class ConsumerA2 {
     public static void main(String[] args) throws MQClientException {
 
         String consumerGroup = "ConsumerA";
-        String instanceName = "ConsumerA3";
+        String instanceName = "ConsumerA2";
         String clientIP = RemotingUtil.getLocalAddress();
         String subscribeTopic = "TopicTest";
         String tags = "*";

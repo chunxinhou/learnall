@@ -21,7 +21,7 @@ public class ScheduledMessageProducer {
 
         String nameServer = "localhost:9876";
         String producerGroup = "ScheduledMessageProducer";
-        String topic = "TopicTest";
+        String topic = "ScheduledMessageProducerTopic";
         String tags = "TagA";
         DefaultMQProducer producer = ProducerBuilders.buildDefaultMQProducer(nameServer, producerGroup);
 
