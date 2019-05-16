@@ -15,12 +15,7 @@ import org.apache.rocketmq.remoting.common.RemotingUtil;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-/**
- * @author houchunxin
- *
- *消息过滤器的简单使用
- */
-public class FilterConsumer {
+public class ConsumerA1 {
 
     private static final InternalLogger logger = Slf4jLoggerFactory.getLogger(ConsumerA3.class);
     public static void main(String[] args) throws MQClientException {
@@ -48,23 +43,7 @@ public class FilterConsumer {
         };
 
         MQPushConsumer consumer = ConsumerBuilders.buildConsumer(consumerGroup, instanceName, clientIP, subscribeTopic, tags, namesrvAddr, messageListener);
-
-        //consumer.subscribe(subscribeTopic, MessageSelector.byTag("tag1 || tag2 || tag3"));
-        /*
-            Numeric comparison, like >, >=, <, <=, BETWEEN, =;
-            Character comparison, like =, <>, IN;
-            IS NULL or IS NOT NULL;
-            Logical AND, OR, NOT;
-            Constant types are:
-
-            Numeric, like 123, 3.1415;
-            Character, like ‘abc’, must be made with single quotes;
-            NULL, special constant;
-            Boolean, TRUE or FALSE;
-         */
-        consumer.subscribe(subscribeTopic, MessageSelector.bySql("a >= 0 and a <= 4 "));
         consumer.start();
 
     }
-
 }
