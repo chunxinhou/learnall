@@ -1,6 +1,7 @@
 package consumer;
 
 import consumer.builder.ConsumerBuilders;
+import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.MQPushConsumer;
 import org.apache.rocketmq.client.consumer.MessageSelector;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
@@ -8,22 +9,20 @@ import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.common.message.MessageExt;
-import org.apache.rocketmq.logging.InternalLogger;
-import org.apache.rocketmq.logging.Slf4jLoggerFactory;
+import org.apache.rocketmq.common.protocol.heartbeat.MessageModel;
 import org.apache.rocketmq.remoting.common.RemotingUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-public class ConsumerA1 {
+public class TtraceConsumer {
 
-    private static final InternalLogger logger = Slf4jLoggerFactory.getLogger(ConsumerA3.class);
     public static void main(String[] args) throws MQClientException {
 
-        String consumerGroup = "ConsumerA";
-        String instanceName = "ConsumerA1";
+        String consumerGroup = "TtraceConsumerGroup";
+        String instanceName = "trace";
         String clientIP = RemotingUtil.getLocalAddress();
-        String subscribeTopic = "TopicTest";
+        String subscribeTopic = "Test";
         String tags = "*";
         String namesrvAddr = "localhost:9876";
 
@@ -32,7 +31,7 @@ public class ConsumerA1 {
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
                 for (MessageExt ext:msgs) {
                     try {
-                        logger.info(new String(ext.getBody(),"UTF-8"));
+                        System.out.println(new String(ext.getBody(),"UTF-8"));
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                         return ConsumeConcurrentlyStatus.RECONSUME_LATER;
@@ -41,8 +40,19 @@ public class ConsumerA1 {
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             }
         };
+        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(consumerGroup,true);
 
-        MQPushConsumer consumer = ConsumerBuilders.buildConsumer(consumerGroup, instanceName, clientIP, subscribeTopic, tags, namesrvAddr, messageListener);
+        consumer.setConsumerGroup(consumerGroup);
+        consumer.setInstanceName(instanceName);
+        consumer.setClientIP(clientIP);
+        consumer.subscribe(subscribeTopic, tags);
+        consumer.registerMessageListener(messageListener);
+        consumer.setMaxReconsumeTimes(3);
+        consumer.setMessageModel(MessageModel.CLUSTERING);
+        consumer.setNamesrvAddr(namesrvAddr);
+
+
+
         consumer.start();
 
     }

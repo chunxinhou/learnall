@@ -8,9 +8,11 @@ public class User {
     private String title;
 
     public User(Integer id,String name, Integer age, String sex,String title) {
+        this.id = id;
         this.name = name;
         this.age = age;
         this.sex = sex;
+        this.title = title;
     }
 
     public Integer getId() {

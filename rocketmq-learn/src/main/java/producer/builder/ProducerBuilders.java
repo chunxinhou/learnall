@@ -17,6 +17,15 @@ public class ProducerBuilders {
         producer.setSendMsgTimeout(3000);
         producer.setCompressMsgBodyOverHowmuch(4096);
         producer.setRetryAnotherBrokerWhenNotStoreOK(false);
+
+        producer.start();
+        return producer;
+    }
+
+    public static DefaultMQProducer buildTraceProducer(String nameServer, String producerGroup) throws MQClientException {
+        DefaultMQProducer producer = new DefaultMQProducer(producerGroup,true);
+        producer.setNamesrvAddr(nameServer);
+
         producer.start();
         return producer;
     }

@@ -12,17 +12,17 @@ import org.apache.rocketmq.remoting.common.RemotingHelper;
 import producer.builder.ProducerBuilders;
 
 /**
- * 同步消息
+ * 异步消息
  * @author houchunxin
  */
 public class AsyncProducer {
 
-    private static final InternalLogger logger = Slf4jLoggerFactory.getLogger(AsyncProducer.class);
+
     public static void main(String[] args) throws Exception {
 
         String nameServer = "localhost:9876";
         String producerGroup = "AsyncProducer";
-        String topic = "TopicTest";
+        String topic = "filter";
         String tags = "TagA";
         DefaultMQProducer producer = ProducerBuilders.buildDefaultMQProducer(nameServer, producerGroup);
 
@@ -36,15 +36,17 @@ public class AsyncProducer {
 //            msg.setDelayTimeLevel(1);
             msg.putUserProperty("i",String.valueOf(i)); //设置消息额外属性
 
+
             producer.send(msg, new SendCallback() {
                 @Override
                 public void onSuccess(SendResult sendResult) {
-                    logger.info("onSuccess:{0}-{1}",JSON.toJSONString(msg),JSON.toJSONString(sendResult));
+                    System.out.printf("%s:%s%n", String.valueOf(key),sendResult);
+
                 }
 
                 @Override
                 public void onException(Throwable e) {
-                    logger.info("onException:{0}",JSON.toJSONString(msg),e);
+                    e.printStackTrace();
                 }
             });
 

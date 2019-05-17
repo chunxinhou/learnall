@@ -1,4 +1,4 @@
-package consumer;
+package consumer.ConsumerA;
 
 import consumer.builder.ConsumerBuilders;
 import org.apache.rocketmq.client.consumer.MQPushConsumer;
@@ -14,15 +14,15 @@ import org.apache.rocketmq.remoting.common.RemotingUtil;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-public class ConsumerA3 {
+public class ConsumerA1 {
 
     private static final InternalLogger logger = Slf4jLoggerFactory.getLogger(ConsumerA3.class);
     public static void main(String[] args) throws MQClientException {
 
-        String consumerGroup = "ConsumerA";
-        String instanceName = "ConsumerA3";
+        String consumerGroup = "ConsumerAGroup";
+        String instanceName = "ConsumerA1";
         String clientIP = RemotingUtil.getLocalAddress();
-        String subscribeTopic = "TopicTest";
+        String subscribeTopic = "Test";
         String tags = "*";
         String namesrvAddr = "localhost:9876";
 
@@ -31,7 +31,8 @@ public class ConsumerA3 {
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
                 for (MessageExt ext:msgs) {
                     try {
-                        logger.info(new String(ext.getBody(),"UTF-8"));
+
+                        System.out.println(new String(ext.getBody(),"UTF-8"));
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                         return ConsumeConcurrentlyStatus.RECONSUME_LATER;
@@ -43,7 +44,6 @@ public class ConsumerA3 {
 
         MQPushConsumer consumer = ConsumerBuilders.buildConsumer(consumerGroup, instanceName, clientIP, subscribeTopic, tags, namesrvAddr, messageListener);
         consumer.start();
+
     }
-
-
 }

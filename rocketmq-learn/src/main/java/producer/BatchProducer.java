@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class BatchProducer {
 
-    private static final InternalLogger logger = Slf4jLoggerFactory.getLogger(AsyncProducer.class);
+
     public static void main(String[] args) throws Exception {
 
         String nameServer = "localhost:9876";
@@ -43,13 +43,14 @@ public class BatchProducer {
             messageList.add(msg);
             messageList.add(msg1);
             messageList.add(msg2);
-            SendResult send = producer.send(messageList);
+            //SendResult send = producer.send(messageList);
 
             ListSplitter splitter = new ListSplitter(messageList);
             while (splitter.hasNext()) {
                 try {
                     List<Message>  listItem = splitter.next();
-                    producer.send(listItem);
+                    SendResult send =  producer.send(listItem);
+                    System.out.printf("%s%n", send);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
