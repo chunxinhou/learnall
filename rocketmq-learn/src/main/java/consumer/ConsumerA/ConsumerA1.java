@@ -22,7 +22,7 @@ public class ConsumerA1 {
         String consumerGroup = "ConsumerAGroup";
         String instanceName = "ConsumerA1";
         String clientIP = RemotingUtil.getLocalAddress();
-        String subscribeTopic = "Test";
+        String subscribeTopic = "SyncProducerTopicqqqqqq";
         String tags = "*";
         String namesrvAddr = "localhost:9876";
 

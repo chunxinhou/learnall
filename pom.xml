@@ -24,6 +24,7 @@
         <module>spring-boot-learn</module>
         <module>spi-learn</module>
         <module>redisson</module>
+        <module>log4j-learn</module>
     </modules>
 
 
